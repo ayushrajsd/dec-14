@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path");
 
 /**
  *
@@ -10,6 +11,7 @@ const express = require("express");
 // create an express app
 const app = express();
 app.use(express.json());
+// app.use(express.static("public"));
 
 // logger Middleware
 const loggerMiddleware = (req, res, next) => {
@@ -26,7 +28,8 @@ const loggerMiddleware = (req, res, next) => {
 
 // define a route on the app
 app.get("/", (req, res) => {
-  res.send("Hello, Express");
+  console.log(__dirname);
+  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 app.get("/about", (req, res) => {
