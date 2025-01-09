@@ -1,6 +1,7 @@
 const express = require("express");
 const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
+const auth = require("../middlewares/authMiddleware");
 
 const userRouter = express.Router(); // CREATE A ROUTER object to handle routes for users
 
@@ -43,15 +44,31 @@ userRouter.post("/login", async (req, res) => {
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1d",
     });
+    // you can pass token cookie here
     console.log(token);
     res.send({
       success: true,
       message: "Login Successfull",
       data: token,
     });
+    // res.cookie("token", token, {
+    //   httpOnly: true,
+    //   expires: new Date(Date.now() + 24 * 3600000), // 1 day
+    // });
+    // res.send({
+    //   success: true,
+    //   message: "Login Successfull",
+    // });
   } catch (error) {
     return res.status(500).send({ message: error.message });
   }
+});
+
+userRouter.get("/current", auth, async (req, res) => {
+  console.log(req.url, req.method);
+  console.log("header token", req.headers["authorization"]);
+  const user = await User.findById(req.body.userId).select("-password");
+  res.send({ success: true, message: "User is authenticated", data: user });
 });
 
 module.exports = userRouter; // EXPORT THE ROUTER
