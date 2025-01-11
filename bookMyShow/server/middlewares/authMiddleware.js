@@ -4,6 +4,8 @@ const auth = (req, res, next) => {
   try {
     console.log("req authorization headers", req.headers.authorization); // Bearer asdasd.12321e.asdasf
     const token = req.headers.authorization.split(" ")[1];
+    // read from cookies
+    // const token = req.cookies.token;
     console.log("token", token);
     const verifiedToken = jwt.verify(token, process.env.JWT_SECRET);
     console.log("verifiedToken", verifiedToken);
