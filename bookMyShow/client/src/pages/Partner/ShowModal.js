@@ -57,7 +57,7 @@ const ShowModal = ({
       title: "Movie",
       dataIndex: "movie",
       render: (text, data) => {
-        return data.movie.title;
+        return data.movie?.title;
       },
     },
     {
@@ -297,9 +297,9 @@ const ShowModal = ({
                       name="movie"
                       placeholder="Select Movie"
                       options={movies.map((movie) => ({
-                        key: movie._id,
-                        value: movie._id,
-                        label: movie.title,
+                        key: movie?._id,
+                        value: movie?._id,
+                        label: movie?.title,
                       }))}
                     />
                   </Form.Item>

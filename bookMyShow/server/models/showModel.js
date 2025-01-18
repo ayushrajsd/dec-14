@@ -28,12 +28,12 @@ const showSchema = new mongoose.Schema(
     },
     movie: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "movie",
+      ref: "movies",
       required: true,
     },
     theatre: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "theatre",
+      ref: "theatres",
       required: true,
     },
   },
