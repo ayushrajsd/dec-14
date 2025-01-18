@@ -96,7 +96,13 @@ function ProtectedRoute({ children }) {
               alignItems: "center",
             }}
           >
-            <h3 className="text-white m-0" style={{ color: "white" }}>
+            <h3
+              className="text-white m-0"
+              style={{ color: "white" }}
+              onClick={() => {
+                navigate("/");
+              }}
+            >
               Book My Show
             </h3>
             <Menu theme="dark" mode="horizontal" items={navItems} />
