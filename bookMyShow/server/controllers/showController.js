@@ -65,7 +65,7 @@ const getAllShowsByTheatre = async (req, res) => {
   }
 };
 
-const getAllTheatersByMovie = async (req, res) => {
+const getAllTheatresByMovie = async (req, res) => {
   try {
     const { movie, date } = req.body;
     const shows = await Show.find({ movie, date }).populate("theatre");
@@ -87,7 +87,7 @@ const getAllTheatersByMovie = async (req, res) => {
     res.send({
       success: true,
       message: "All Theatres are fetched",
-      data: uniqueTheate,
+      data: uniqueTheatre,
     });
   } catch (err) {
     res.send({
@@ -120,6 +120,6 @@ module.exports = {
   deleteShow,
   updateShow,
   getAllShowsByTheatre,
-  getAllTheatersByMovie,
+  getAllTheatresByMovie,
   getShowById,
 };
