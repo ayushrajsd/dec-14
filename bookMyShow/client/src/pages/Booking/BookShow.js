@@ -7,7 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { message, Card, Row, Col, Button } from "antd";
 import moment from "moment";
 import StripeCheckout from "react-stripe-checkout";
-// import { bookShow, makePayment } from "../../api/booking";
+import { bookShow, makePayment } from "../../api/booking";
 
 const BookShow = () => {
   const { user } = useSelector((state) => {
@@ -19,7 +19,49 @@ const BookShow = () => {
   const [selectedSeats, setSelectedSeats] = useState([]);
   const navigate = useNavigate();
 
-  const onToken = () => {};
+  const book = async (transactionId) => {
+    try {
+      dispatch(ShowLoading());
+      const response = await bookShow({
+        show: params.id,
+        transactionId,
+        seats: selectedSeats,
+        user: user._id,
+      });
+      if (response.success) {
+        message.success("Show Booking done!");
+        navigate("/profile");
+      } else {
+        message.error(response.message);
+      }
+      dispatch(HideLoading());
+    } catch (err) {
+      message.error(err.message);
+      dispatch(HideLoading());
+    }
+  };
+
+  const onToken = async (token) => {
+    try {
+      dispatch(ShowLoading());
+      const response = await makePayment(
+        token,
+        selectedSeats.length * show.ticketPrice
+      );
+      if (response.success) {
+        message.success(response.message);
+        book(response.data);
+        console.log(response);
+      } else {
+        message.error(response.message);
+      }
+      dispatch(HideLoading());
+    } catch (err) {
+      message.error(err.message);
+      dispatch(HideLoading());
+    }
+  };
+
   const getSeats = () => {
     let columns = 12;
     let totalSeats = show.totalSeats;
