@@ -1,10 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, Form, Input, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { LoginUser } from "../../api/users";
 
 function Login() {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      navigate("/");
+    }
+  }, []);
+
   const onFinish = async (values) => {
     console.log(values);
     try {
@@ -68,6 +75,9 @@ function Login() {
           <div>
             <p>
               New User ? <Link to="/register">Register Here</Link>
+            </p>
+            <p>
+              Forgot Password? <Link to="/forget">Click Here</Link>
             </p>
           </div>
         </section>

@@ -11,6 +11,8 @@ import Partner from "./pages/Partner";
 import Profile from "./pages/User";
 import SingleMovie from "./pages/Booking/SingleMovie";
 import BookShow from "./pages/Booking/BookShow";
+import Forget from "./pages/Forget";
+import Reset from "./pages/Reset";
 function App() {
   return (
     <div>
@@ -67,6 +69,8 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            <Route path="/forget" element={<Forget />} />
+            <Route path="/reset" element={<Reset />} />
           </Routes>
         </BrowserRouter>
       </Provider>
