@@ -1,6 +1,7 @@
 const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 const EmailHelper = require("../utils/EmailHelper");
+const bcrypt = require("bcrypt");
 
 const Register = async (req, res) => {
   try {
@@ -11,7 +12,12 @@ const Register = async (req, res) => {
         message: "User already exists",
       });
     }
-    const newUser = new User(req.body);
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
+    const newUser = new User({
+      ...req.body,
+      password: hashedPassword,
+    });
     await newUser.save();
     res.send({
       success: true,
@@ -31,7 +37,10 @@ const Login = async (req, res) => {
         message: "User not found, Please register",
       });
     }
-    if (req.body.password !== user.password) {
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
+    const isMatch = await bcrypt.compare(req.body.password, hashedPassword);
+    if (!isMatch) {
       return res.send({
         success: false,
         message: "Invalid Password",
@@ -40,21 +49,11 @@ const Login = async (req, res) => {
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1d",
     });
-    // you can pass token cookie here
-    console.log(token);
     res.send({
       success: true,
       message: "Login Successfull",
       data: token,
     });
-    // res.cookie("token", token, {
-    //   httpOnly: true,
-    //   expires: new Date(Date.now() + 24 * 3600000), // 1 day
-    // });
-    // res.send({
-    //   success: true,
-    //   message: "Login Successfull",
-    // });
   } catch (error) {
     return res.status(500).send({ message: error.message });
   }

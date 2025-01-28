@@ -11,13 +11,18 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "express-mongo-sanitize": "^2.2.0",
+    "express-rate-limit": "^7.5.0",
+    "helmet": "^8.0.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "8.9.5",
     "nodemailer": "^6.10.0",
     "nodemon": "^3.1.9",
+    "path": "^0.12.7",
     "stripe": "^17.5.0"
   }
 }

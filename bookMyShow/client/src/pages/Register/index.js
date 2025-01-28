@@ -15,15 +15,12 @@ function Register() {
     try {
       const response = await RegisterUser(values);
       if (response.success) {
-        // success msg
         message.success(response.message);
+        navigate("/login");
       } else {
-        // error message
         message.error(response.message);
       }
     } catch (err) {
-      console.log(err);
-      // error message
       message.error(err.message);
     }
   };
