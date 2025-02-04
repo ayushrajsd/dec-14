@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>File Streaming Example</title>
+  </head>
+  <body>
+    <h1>File Streaming Example</h1>
+    <div id="status"></div>
+    <script>
+      async function fetchFile() {
+        const response = await fetch("http://localhost:3000");
+
+        // Check if the request was successful
+        if (!response.ok) {
+          document.getElementById("status").textContent =
+            "Failed to fetch file.";
+          return;
+        }
+
+        // Read the file as a stream
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let done = false;
+        let chunks = [];
+
+        // Loop through the chunks of the stream
+        while (!done) {
+          const { value, done: doneReading } = await reader.read();
+          done = doneReading;
+
+          // Decode the chunk to text
+          const chunkText = decoder.decode(value, { stream: true });
+          chunks.push(chunkText);
+
+          // Optionally display progress or show data
+          document.getElementById(
+            "status"
+          ).textContent = `Received ${chunks.length} chunks...`;
+          console.log("Received chunk:", chunkText);
+        }
+
+        // Combine all chunks into one string (or process them as needed)
+        const fullFileContent = chunks.join("");
+        console.log("Full file content:", fullFileContent);
+
+        document.getElementById("status").textContent =
+          "File download completed!";
+      }
+
+      fetchFile();
+    </script>
+  </body>
+</html>
